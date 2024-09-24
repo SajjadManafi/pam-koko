@@ -169,13 +169,7 @@
                 return "";
             }
             var kokoLang = getCookieByName("django_language");
-            if ( kokoLang.startsWith("en")) {
-                document.title = "File Manager"
-            }else if (kokoLang.startsWith("ja")) {
-                document.title = "ファイル管理"
-            } else {
-                document.title = "文件管理"
-            }
+            document.title = "File Manager"
 	    	var load = function () {
                 var loct = window.location.search;
 		        var full_lng, locm, lng;
