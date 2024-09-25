@@ -12,9 +12,9 @@ RUN yarn build
 WORKDIR /opt/koko
 RUN make build -s \
     && set -x && ls -al . \
-    && mv /opt/koko/build/koko-linux-${TARGETARCH} /opt/koko/koko \
-    && mv /opt/koko/build/helm-linux-${TARGETARCH} /opt/koko/bin/helm \
-    && mv /opt/koko/build/kubectl-linux-${TARGETARCH} /opt/koko/bin/kubectl
+    && mv /opt/koko/build/koko /opt/koko/koko \
+    && mv /opt/koko/build/helm /opt/koko/bin/helm \
+    && mv /opt/koko/build/kubectl /opt/koko/bin/kubectl
 
 RUN mkdir /opt/koko/release \
     && mv /opt/koko/locale /opt/koko/release \
@@ -35,7 +35,7 @@ RUN set -ex \
     && rm -f /etc/apt/apt.conf.d/docker-clean \
     && echo 'Binary::apt::APT::Keep-Downloaded-Packages "true";' >/etc/apt/apt.conf.d/keep-cache \
     && sed -i "s@http://.*.debian.org@${APT_MIRROR}@g" /etc/apt/sources.list \
-    && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && ln -sf /usr/share/zoneinfo/Asia/Tehran /etc/localtime \
     && apt-get update \
     && apt-get install -y --no-install-recommends ${DEPENDENCIES} \
     && apt-get clean all \
