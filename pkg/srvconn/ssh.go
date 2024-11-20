@@ -162,12 +162,20 @@ func getAvailableProxyClient(cfgs ...SSHClientOptions) (*SSHClient, error) {
 }
 
 func NewSSHClientWithCfg(cfg *SSHClientOptions) (*SSHClient, error) {
+
+	// AFTA#111
+	hostKeyAlgorithms := []string{
+		"ecdsa-sha2-nistp256",
+		"ecdsa-sha2-nistp384",
+		"ecdsa-sha2-nistp521",
+	}
 	gosshCfg := gossh.ClientConfig{
-		User:            cfg.Username,
-		Auth:            cfg.AuthMethods(),
-		Timeout:         time.Duration(cfg.Timeout) * time.Second,
-		HostKeyCallback: gossh.InsecureIgnoreHostKey(),
-		Config:          createSSHConfig(),
+		User:              cfg.Username,
+		Auth:              cfg.AuthMethods(),
+		Timeout:           time.Duration(cfg.Timeout) * time.Second,
+		HostKeyCallback:   gossh.InsecureIgnoreHostKey(),
+		Config:            createSSHConfig(),
+		HostKeyAlgorithms: hostKeyAlgorithms,
 	}
 	destAddr := net.JoinHostPort(cfg.Host, cfg.Port)
 	if len(cfg.proxySSHClientOptions) > 0 {
